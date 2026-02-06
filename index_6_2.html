@@ -1,0 +1,528 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>AiSSIST – Artificial Intelligent Support System</title>
+
+  <style>
+    :root {
+      /* Paleta (tech/AI) – spójna i czytelna */
+      --nav-bg: #0b2142;
+      --nav-text: #e6eefc;
+
+      --accent: #ff7a00;
+      --accent-hover: #e06600;
+
+      --text-dark: #111827;
+      --text-light: #4b5563;
+
+      --bg: #f6f8fc;
+      --card-bg: #ffffff;
+
+      --border: #e5e7eb;
+
+      --radius: 12px;
+      --shadow: 0 10px 24px rgba(17, 24, 39, 0.08);
+      --shadow-soft: 0 6px 18px rgba(17, 24, 39, 0.08);
+
+      --focus: 0 0 0 3px rgba(255, 122, 0, 0.35);
+    }
+
+    * { box-sizing: border-box; }
+
+    body {
+      margin: 0;
+      font-family: "Segoe UI", Arial, sans-serif;
+      background: var(--bg);
+      color: var(--text-dark);
+      line-height: 1.6;
+    }
+
+    a { text-decoration: none; color: inherit; }
+
+    .container {
+      max-width: 1100px;
+      margin: 0 auto;
+      padding: 0 20px;
+    }
+
+    /* --- NAVBAR --- */
+    .navbar {
+      background: var(--nav-bg);
+      color: var(--nav-text);
+      position: sticky;
+      top: 0;
+      z-index: 10;
+      border-bottom: 1px solid rgba(255,255,255,0.08);
+    }
+
+    .navbar-inner {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 12px 20px;
+      gap: 16px;
+    }
+
+    .logo img {
+      height: 34px;
+      width: auto;
+      display: block;
+    }
+
+    .nav-links {
+      display: flex;
+      gap: 22px;
+      font-size: 0.95rem;
+      align-items: center;
+      flex-wrap: wrap;
+      justify-content: flex-end;
+    }
+
+    .nav-links a {
+      color: #fff;
+      opacity: 0.9;
+      padding: 6px 8px;
+      border-radius: 8px;
+    }
+
+    .nav-links a:hover { opacity: 1; background: rgba(255,255,255,0.08); }
+    .nav-links a:focus-visible { outline: none; box-shadow: var(--focus); }
+
+    /* --- FUNDING BAR --- */
+    .funding-bar {
+      background: #ffffff;
+      border-bottom: 1px solid var(--border);
+      padding: 10px 10px;
+    }
+
+    .funding-bar-inner {
+      max-width: 1200px;
+      margin: 0 auto;
+      text-align: center;
+    }
+
+    .funding-bar img {
+      max-width: min(720px, 90%);
+      height: auto;
+      opacity: 0.95;
+    }
+
+    /* --- HERO --- */
+    .hero {
+      position: relative;
+      color: #fff;
+      text-align: center;
+      min-height: 28vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 64px 20px;
+      background-image:
+        linear-gradient(rgba(11, 33, 66, 0.78), rgba(11, 33, 66, 0.88)),
+        url("hero.jpg");
+      background-size: cover;
+      background-position: center;
+    }
+
+    .hero h1 {
+      font-size: 2.6rem;
+      margin: 0 0 10px;
+      letter-spacing: 0.2px;
+    }
+
+    .hero p {
+      max-width: 720px;
+      margin: 0 auto 28px;
+      font-size: 1.05rem;
+      color: rgba(230, 238, 252, 0.92);
+    }
+
+    .hero-buttons {
+      display: flex;
+      justify-content: center;
+      gap: 14px;
+      flex-wrap: wrap;
+    }
+
+    .btn {
+      padding: 12px 22px;
+      border-radius: 999px;
+      font-weight: 700;
+      border: 2px solid transparent;
+      cursor: pointer;
+      font-size: 0.95rem;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      transition: transform 120ms ease, background 120ms ease, border-color 120ms ease;
+    }
+
+    .btn:focus-visible { outline: none; box-shadow: var(--focus); }
+    .btn:hover { transform: translateY(-1px); }
+
+    .btn-primary { background: var(--accent); color: #fff; }
+    .btn-primary:hover { background: var(--accent-hover); }
+
+    .btn-outline {
+      background: transparent;
+      color: #fff;
+      border-color: rgba(255,255,255,0.9);
+    }
+    .btn-outline:hover { background: rgba(255,255,255,0.12); }
+
+    /* --- SEKCJE OGÓLNE --- */
+    section {
+      padding: 54px 0;
+      background: var(--bg);
+    }
+
+    section:nth-of-type(even) { background: #ffffff; }
+
+    .section-title {
+      text-align: center;
+      margin-bottom: 26px;
+    }
+
+    .section-title h2 {
+      font-size: 2rem;
+      margin: 0 0 10px;
+      letter-spacing: 0.2px;
+    }
+
+    .section-title p {
+      margin: 0;
+      color: var(--text-light);
+      max-width: 720px;
+      margin-inline: auto;
+    }
+
+    .section-content {
+      max-width: 900px;
+      margin: 0 auto;
+      font-size: 1rem;
+      color: var(--text-dark);
+    }
+
+    .section-content ul { padding-left: 18px; }
+
+
+/* --- ZESPÓŁ – osoby w kółkach --- */
+.team-grid {
+  display: flex;
+  justify-content: center;   /* wyśrodkowanie całej linii */
+  align-items: flex-start;
+  gap: 36px;
+  margin-top: 30px;
+  flex-wrap: nowrap;         /* <-- wymusza JEDNĄ linię */
+}
+
+
+.team-member {
+  text-align: center;
+  width: 200px;   /* kontrola szerokości */
+  flex-shrink: 0; /* zapobiega ściskaniu */
+}
+
+
+.team-member img {
+  width: 160px;
+  height: 160px;
+  object-fit: cover;
+  border-radius: 10%;
+  border: 2px solid var(--border);
+  box-shadow: var(--shadow-soft);
+  margin-bottom: 14px;
+  transition: transform 0.25s ease, box-shadow 0.25s ease;
+  display: block;               /* ważne do wyśrodkowania */
+  margin: 0 auto 20px;  
+
+  transition: transform 0.25s ease, box-shadow 0.25s ease;
+}
+
+.team-member img:hover {
+  transform: scale(1.05);
+  box-shadow: 0 14px 32px rgba(17, 24, 39, 0.18);
+}
+
+.team-member h3 {
+  margin: 6px 0 2px;
+  font-size: 1.05rem;
+  font-weight: 700;
+  color: var(--text-dark);
+}
+
+.team-member p {
+  margin: 0;
+  font-size: 0.92rem;
+  color: var(--text-light);
+}
+
+    /* --- AKTUALNOŚCI (kafelki) --- */
+    .cards {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+      gap: 24px;
+      margin-top: 30px;
+    }
+
+    .card {
+      background: var(--card-bg);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      overflow: hidden;
+      border: 1px solid rgba(229,231,235,0.7);
+    }
+
+    .card-img {
+      height: 160px;
+      background-size: cover;
+      background-position: center;
+    }
+
+    .card-body { padding: 18px 20px 22px; }
+
+    .card-body h3 { margin: 0 0 8px; font-size: 1.05rem; }
+    .card-body p { margin: 0; font-size: 0.95rem; color: var(--text-light); }
+
+    .see-more {
+      text-align: center;
+      margin-top: 18px;
+      font-size: 0.92rem;
+    }
+
+    .see-more a { color: var(--accent); font-weight: 700; }
+    .see-more a:focus-visible { outline: none; box-shadow: var(--focus); border-radius: 8px; }
+
+    /* =========================
+       KONTAKT – styl jak 3dmeeting (bloki) + MAPA
+       ========================= */
+
+    .map-frame {
+     width: 100%;
+     height: 260px;
+     border: 0;
+     border-radius: var(--radius);
+     margin-top: 24px;
+     box-shadow: var(--shadow-soft);
+    }
+
+
+    .map-frame {
+      width: 100%;
+      height: 240px;
+      border: 0;
+      border-radius: 12px;
+      margin-top: 12px;
+    }
+
+    /* --- STOPKA --- */
+    .footer {
+      background: var(--nav-bg);
+      color: rgba(230, 238, 252, 0.92);
+      text-align: center;
+      padding: 26px 15px;
+      font-size: 0.9rem;
+      border-top: 1px solid rgba(255,255,255,0.08);
+    }
+
+    .footer a {
+      color: #ffffff;
+      text-decoration: underline;
+      text-decoration-thickness: 1px;
+    }
+
+    @media (max-width: 900px) {
+      .contact-wrap { grid-template-columns: 1fr; }
+    }
+
+    @media (max-width: 700px) {
+      .hero h1 { font-size: 2.1rem; }
+      .navbar-inner { padding: 10px 14px; }
+    }
+  </style>
+</head>
+
+<body>
+
+  <!-- NAVBAR -->
+  <header class="navbar">
+    <div class="navbar-inner container">
+      <div class="logo">
+        <img src="logo_aissist.png" alt="AiSSIST logo" />
+      </div>
+      <nav class="nav-links">
+        <a href="#cel">Cel projektu</a>
+        <a href="#zespol">Zespół</a>
+        <a href="#aktualnosci">Aktualności</a>
+        <a href="#kontakt">Kontakt</a>
+      </nav>
+    </div>
+  </header>
+
+  <!-- PASEK Z LOGOTYPAMI FINANSOWANIA -->
+  <div class="funding-bar">
+    <div class="funding-bar-inner">
+      <img src="logo_fundation_aissist.png" alt="AiSSIST – logotyp projektu i fundatorów" />
+    </div>
+  </div>
+
+  <!-- HERO -->
+  <section class="hero">
+    <div class="container">
+      <h1>AiSSIST – Artificial Intelligent Support System</h1>
+      <p>
+        Inteligentny system wspierający tomograficzne pomiary 3D (XCT)
+        z wykorzystaniem AI i digital twin.
+      </p>
+      <div class="hero-buttons">
+        <a href="#cel" class="btn btn-primary">Dowiedz się więcej</a>
+        <a href="#kontakt" class="btn btn-outline">Kontakt</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- CEL PROJEKTU -->
+  <section id="cel">
+    <div class="container">
+      <div class="section-title">
+        <h2>Cel projektu</h2>
+        <p>Główne założenia i obszary badawcze realizowane w ramach AiSSIST</p>
+      </div>
+
+      <div class="section-content">
+        <p>
+          Celem projektu AiSSIST jest opracowanie inteligentnego systemu wspierającego
+          trójwymiarowe pomiary tomograficzne (XCT) poprzez:
+        </p>
+        <ul>
+          <li>automatyzację akwizycji danych pomiarowych,</li>
+          <li>zastosowanie algorytmów sztucznej inteligencji w rekonstrukcji obrazu,</li>
+          <li>tworzenie cyfrowych bliźniaków (digital twin) stanowisk badawczych,</li>
+          <li>optymalizację parametrów procesu pomiarowego.</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- ZESPÓŁ BADAWCZY -->
+  <section id="zespol">
+    <div class="container">
+      <div class="section-title">
+        <h2>Zespół badawczy</h2>
+        <p>Projekt realizowany na Politechnice Wrocławskiej przez interdyscyplinarny zespół specjalistów</p>
+      </div>
+
+      <div class="section-content">
+        <div class="team-grid">
+
+          <div class="team-member">
+            <img src="Ziolkowski.jpg" alt="Dr inż. Imię Nazwisko">
+            <h3>Dr inż. Imię Nazwisko</h3>
+            <p>Główny wykonawca</p>
+          </div>
+
+          <div class="team-member">
+            <img src="Grochowska.jpg" alt="Mgr inż. Imię Nazwisko">
+            <h3>Mgr inż. Imię Nazwisko</h3>
+            <p>Specjalista XCT</p>
+          </div>
+
+          <div class="team-member">
+            <img src="Paniczek.JPG" alt="Mgr inż. Imię Nazwisko">
+            <h3>Mgr inż. Imię Nazwisko</h3>
+            <p>AI / analiza danych</p>
+          </div>
+
+          <div class="team-member">
+            <img src="Gruber.jpg" alt="Mgr inż. Imię Nazwisko">
+            <h3>Mgr inż. Imię Nazwisko</h3>
+            <p>AI / analiza danych</p>
+          </div>
+
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- AKTUALNOŚCI -->
+  <section id="aktualnosci">
+    <div class="container">
+      <div class="section-title">
+        <h2>Aktualności</h2>
+        <p>Najważniejsze etapy realizacji projektu i bieżące wydarzenia</p>
+      </div>
+
+      <div class="cards">
+        <article class="card">
+          <div class="card-img" style="background-image: url('news1.jpg');"></div>
+          <div class="card-body">
+            <h3>Start projektu – 2025</h3>
+            <p>Rozpoczęcie prac badawczych, konfiguracja stanowisk XCT oraz zebranie wymagań przemysłowych.</p>
+          </div>
+        </article>
+
+        <article class="card">
+          <div class="card-img" style="background-image: url('news2.jpg');"></div>
+          <div class="card-body">
+            <h3>Model cyfrowy tomografu</h3>
+            <p>Opracowanie pierwszej wersji cyfrowego bliźniaka stanowiska badawczego i integracja z systemem sterowania.</p>
+          </div>
+        </article>
+
+        <article class="card">
+          <div class="card-img" style="background-image: url('news3.jpg');"></div>
+          <div class="card-body">
+            <h3>Demonstrator systemu AI</h3>
+            <p>Prezentacja demonstratora systemu AiSSIST oraz wyników badań w środowisku przemysłowym.</p>
+          </div>
+        </article>
+      </div>
+
+      <div class="see-more">
+        <a href="#">Zobacz więcej komunikatów…</a>
+      </div>
+    </div>
+  </section>
+
+<!-- KONTAKT -->
+<section id="kontakt">
+  <div class="container">
+
+    <div class="section-title">
+      <h2>Kontakt</h2>
+      <p>Informacje kontaktowe projektu AiSSIST</p>
+    </div>
+
+    <div class="section-content">
+      <p>
+        <strong>Politechnika Wrocławska</strong><br>
+        Wydział Mechaniczny<br>
+        Katedra Zaawansowanych Technik Wytwarzania<br>
+        ul. Łukasiewicza 5<br>
+        50-371 Wrocław, Polska
+      </p>
+
+      <iframe
+        class="map-frame"
+        title="Mapa – Politechnika Wrocławska, ul. Łukasiewicza 5"
+        src="https://www.google.com/maps?q=ul.%20%C5%81ukasiewicza%205%20Wroc%C5%82aw&output=embed"
+        loading="lazy"
+        referrerpolicy="no-referrer-when-downgrade">
+      </iframe>
+    </div>
+
+  </div>
+</section>
+
+
+
+  <!-- STOPKA -->
+  <footer class="footer">
+    AiSSIST, Politechnika Wrocławska<br />
+    Copyright AiSSIST | Wszelkie prawa zastrzeżone | All rights reserved
+  </footer>
+
+</body>
+</html>
